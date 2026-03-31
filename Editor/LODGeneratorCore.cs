@@ -563,7 +563,7 @@ namespace Plugins.AutoLODGenerator.Editor
 
                     Mesh mesh = null;
                     bool isSkinned = false;
-                    
+
                     if (renderer is SkinnedMeshRenderer skinnedRenderer)
                     {
                         mesh = skinnedRenderer.sharedMesh;
@@ -579,11 +579,11 @@ namespace Plugins.AutoLODGenerator.Editor
                         // This is an unsaved mesh - save it
                         var meshName = $"{baseName}_LOD{lodIndex}";
                         var savedPath = SaveMeshAsset(mesh, folderPath, meshName);
-                        
+
                         if (!string.IsNullOrEmpty(savedPath))
                         {
                             savedPaths.Add(savedPath);
-                            
+
                             // Reload the saved mesh and assign it back
                             var savedMesh = AssetDatabase.LoadAssetAtPath<Mesh>(savedPath);
                             if (savedMesh != null)
@@ -592,7 +592,7 @@ namespace Plugins.AutoLODGenerator.Editor
                                 {
                                     ((SkinnedMeshRenderer)renderer).sharedMesh = savedMesh;
                                 }
-                                else
+                                else if (renderer.TryGetComponent<MeshFilter>(out var meshFilter))
                                 {
                                     meshFilter.sharedMesh = savedMesh;
                                 }
